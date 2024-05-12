@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import green from './assets/moving-up.png';
+import red from './assets/moving-down.png';
 
 function App() {
   const [fullList, setFullList] = useState([]);
@@ -42,7 +44,17 @@ function App() {
   };
 
   return (
-    <>        
+    <>
+      <div className='ticker-container'>
+        <div className="ticker-actual">
+          {Object.entries(cryptoList).map((item) => (
+              <span className='abbreviation' key={item[1].CoinInfo.Id}><b>{item[1].CoinInfo.Name}: </b> {item[1].DISPLAY ? item[1].DISPLAY.USD.PRICE + ' ' : 'N/A '}
+                {item[1].DISPLAY ? <img className='moving' src={item[1].DISPLAY.USD.CHANGEPCT24HOUR > 0 ? green : red}></img> : null}
+              </span>
+          ))}
+        </div>
+      </div>
+      
       <div className="header">
         <h1>My Crypto Tracker</h1>
         <img id='crypto-icon' src='../public/crypto-icon.png' alt='crypto-icon' />
@@ -64,7 +76,7 @@ function App() {
                     <>
                       <p className="coin-price"><b>Price: </b>{item[1].DISPLAY.USD.PRICE}</p>
                       <p className="coin-volume"><b>Volume: </b>{item[1].DISPLAY.USD.TOTALVOLUME24H}</p>
-                      <h5>Percent Change: <p className={item[1].DISPLAY.USD.CHANGEPCT24HOUR > 0 ? 'coin-percent green' : 'coin-percent red'}>{Math.round(item[1].RAW.USD.CHANGEPCT24HOUR * 100) / 100}%</p></h5>
+                      <p><b>Percent Change:</b> <span className={item[1].DISPLAY.USD.CHANGEPCT24HOUR > 0 ? 'coin-percent green' : 'coin-percent red'}>{Math.round(item[1].RAW.USD.CHANGEPCT24HOUR * 100) / 100}%</span></p>
                     </> : <p>Pricing data not found</p>}
                 </div>
               </div>
