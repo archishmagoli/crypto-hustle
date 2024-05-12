@@ -2,22 +2,77 @@ import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
+  const [fullList, setFullList] = useState([]);
   const [cryptoList, setCryptoList] = useState([]);
   const api_key = import.meta.env.VITE_API_KEY;
+  const image_url = "https://www.cryptocompare.com";
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(()  => {
     fetchCoins();
-  }, [cryptoList]);
+  }, []);
 
-  const fetchCoins = () => {
+  const fetchCoins = async () => {
+    const url = `https://min-api.cryptocompare.com/data/top/totalvolfull?limit=50&tsym=USD&api_key=${api_key}`;
 
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      setCryptoList(data.Data);
+      setFullList(data.Data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
+
+  const searchItems = searchValue => {
+    setSearchInput(searchValue);
+    if (searchValue !== "" && cryptoList) {
+      const filteredData = cryptoList.filter((item) => 
+        {
+          return (item.CoinInfo.FullName + " " + item.CoinInfo.Name).toLowerCase()
+          .toLowerCase()
+          .includes(searchValue.toLowerCase())
+        }
+      )
+      setCryptoList(filteredData);
+    } else {
+      setCryptoList(fullList);
+    }
+  };
 
   return (
     <>        
-      <h1>My Crypto Tracker</h1>
-      <h2>Top 100 Crypto Coins</h2>
-      <p>See the top traded coins by total volume across all markets in the last 24 hours.</p>
+      <div className="header">
+        <h1>My Crypto Tracker</h1>
+        <img id='crypto-icon' src='../public/crypto-icon.png' alt='crypto-icon' />
+      </div>
+      <h2>Top Crypto Coins</h2>
+      <p>See some of the most popular coins traded today.</p>
+      <input type="text" id='search' placeholder="Search..." onChange={e => searchItems(e.target.value)} />
+      <div className='coin-list'>
+        {cryptoList ? Object.entries(cryptoList).map((item) => {
+          return (
+            <div key={item[1].CoinInfo.Id} className="coin-container">
+              <div className="coin-row">
+                <div className="coin">
+                  <img className='coin-image'src={image_url + item[1].CoinInfo.ImageUrl} alt={item[1].CoinInfo.FullName} />
+                  <h3>{item[1].CoinInfo.FullName} ({item[1].CoinInfo.Name})</h3>
+                </div>
+                <div className="coin-data">
+                  {item[1].DISPLAY ?
+                    <>
+                      <p className="coin-price"><b>Price: </b>{item[1].DISPLAY.USD.PRICE}</p>
+                      <p className="coin-volume"><b>Volume: </b>{item[1].DISPLAY.USD.TOTALVOLUME24H}</p>
+                      <h5>Percent Change: <p className={item[1].DISPLAY.USD.CHANGEPCT24HOUR > 0 ? 'coin-percent green' : 'coin-percent red'}>{Math.round(item[1].RAW.USD.CHANGEPCT24HOUR * 100) / 100}%</p></h5>
+                    </> : <p>Pricing data not found</p>}
+                </div>
+              </div>
+            </div>
+          )
+        }
+        ) : <p>Loading...</p>}
+      </div>
     </>
   )
 }
