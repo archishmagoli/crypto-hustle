@@ -50,6 +50,11 @@
   color: #f23434;
 }
 
+.coin-container:hover {
+  transform: scale(1.05); /* Add scale transform on hover */
+  background-color: #052c65;
+}
+
 #search {
   font-size: inherit;
   font-family: inherit;
@@ -99,15 +104,39 @@
   margin: 1vw;
 }
 
+.abbreviation:hover {
+  color: #2271e8;
+}
+
 .moving {
   width: 1vw;
   height: 1vw;
 }
 
 .ticker-container {
-  width: 93vw;
+  width: 100%;
   overflow-x: hidden;
   background-color: black;
   box-shadow: 0 0 0.2vw rgba(255, 255, 255, 0.998);
   border-radius: 0.5vw;
+}
+
+.sidenav {
+  width: 18vw;
+  background-color: #b32c33;
+  margin-right: 1vw;
+  padding: 2vw;
+  margin-left: 0;
+  top: 0;
+  border-radius: 0.5vw;
+  box-shadow: 0 0 0.2vw rgba(255, 255, 255, 0.998);
+}
+
+.page {
+  display: flex;
+}
+
+.content {
+  margin: 1em;
+  width: 65vw;
 }
