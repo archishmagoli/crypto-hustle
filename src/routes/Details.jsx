@@ -1,11 +1,13 @@
 import '../App.css';
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+const api_key = import.meta.env.VITE_API_KEY;
+import CoinChart from './CoinChart';
+
 
 const Details = () => {
     let params = useParams();
     let symbol = params.id;
-    const api_key = import.meta.env.VITE_API_KEY;
     const price_url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${symbol}&tsyms=USD&api_key=${api_key}`;
     const detail_url = `https://min-api.cryptocompare.com/data/all/coinlist?fsym=${symbol}&api_key=${api_key}`;
     const image_url = "https://www.cryptocompare.com";
@@ -13,13 +15,18 @@ const Details = () => {
     const [priceData, setPriceData] = useState([]);
     const [detailData, setDetailData] = useState([]);
 
+    const controller = new AbortController();
+
     const fetchDetails = async (id) => {
         try {
-            const price_response = await fetch(price_url);
-            const detail_response = await fetch(detail_url);
 
-            const price_data = await price_response.json();
-            const detail_data = await detail_response.json();
+            const [priceResponse, detailResponse] = await Promise.all([
+                fetch(price_url),
+                fetch(detail_url)
+            ]);
+
+            const price_data = await priceResponse.json();
+            const detail_data = await detailResponse.json();
             
             setPriceData(price_data);
             setDetailData(detail_data);
@@ -29,21 +36,26 @@ const Details = () => {
             }
             
         } catch (error) {
-            console.error('Error:', error);
+            if (error.name === 'AbortError') {
+                console.log('Fetch aborted');
+            } else {
+                console.error('Error:', error);
+            }
         }
     }
 
     useEffect(() => {
         fetchDetails('default');
+        return () => {
+            controller.abort();
+        }
     }, []);
 
     return (
         <>
-        <button id='home'>
-            <Link style={{ color: "white" }} to="/">
-                Home
-            </Link>
-        </button>
+        <Link id='home' style={{ color: "white" }} to="/">
+            Home
+        </Link>
 
         {
             detailData.Data === undefined || priceData == undefined ? <p>Loading...</p> :
@@ -63,6 +75,8 @@ const Details = () => {
                         fetchDetails(id);
                     }}>Refresh</button>
                 </div>
+
+                <CoinChart symbol={symbol} market={priceData.DISPLAY[symbol].USD.MARKET} />
                 
                 <div id='table-div'>
                     <h2>Details</h2>

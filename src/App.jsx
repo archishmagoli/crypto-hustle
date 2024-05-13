@@ -3,11 +3,11 @@ import './App.css'
 import SideNav from './components/SideNav.jsx';
 import CryptoCard from './components/CryptoCard.jsx';
 import Ticker from './components/Ticker.jsx';
+const api_key = import.meta.env.VITE_API_KEY;
 
 function App() {
   const [fullList, setFullList] = useState([]);
   const [cryptoList, setCryptoList] = useState([]);
-  const api_key = import.meta.env.VITE_API_KEY;
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(()  => {

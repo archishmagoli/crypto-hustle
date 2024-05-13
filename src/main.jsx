@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path='/details/:id' element={<Details />} />
-        <Route path="*" element={ <NotFound /> }/>
+        <Route path="*" element={ <NotFound /> }/> {/* graceful error-handling page page */}
       </Routes>
     </BrowserRouter>
     
