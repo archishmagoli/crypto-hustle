@@ -56,7 +56,7 @@ function App() {
           
           <div className="header">
             <h1>My Crypto Tracker</h1>
-            <img id='crypto-icon' src='../public/crypto-icon.png' alt='crypto-icon' />
+            <img id='crypto-icon' src='../crypto-icon.png' alt='crypto-icon' />
             <button id='refresh' onClick={(e) => {
                 const id = e.target.id;
                 fetchCoins(id);
