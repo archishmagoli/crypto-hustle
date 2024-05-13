@@ -52,7 +52,7 @@
 
 .coin-container:hover {
   transform: scale(1.05); /* Add scale transform on hover */
-  background-color: #052c65;
+  background-color: #021c42;
 }
 
 #search {
@@ -139,4 +139,70 @@
 .content {
   margin: 1em;
   width: 65vw;
+}
+
+.coin-detail-image {
+  width: 10vw;
+  height: 10vw;
+}
+
+/* Table */
+table {
+  width: fit-content;
+  width: 100%;
+  border: 1px solid whitesmoke;
+}
+
+/* Table Header */
+thead {
+  background-color: #1f1e1e;
+  color: #fff;
+  border: 1px solid whitesmoke;
+}
+
+/* Table Header Cells */
+th {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid whitesmoke;
+}
+
+/* Table Body */
+tbody {
+  background-color: #313131;
+  color: #fff;
+  
+}
+
+/* Table Cells */
+td {
+  padding: 10px;
+  border: 1px solid whitesmoke;
+}
+
+#table-div {
+  align-items: center;
+  justify-content: center;
+}
+
+#refresh {
+  background-color: #103f85;
+}
+
+#refresh:hover {
+  background-color: #2271e8;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  gap: 3vw;
+}
+
+#home {
+  background-color: #6b0303;
+}
+
+#home:hover {
+  background-color: #b32c33;
 }

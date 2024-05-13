@@ -1,4 +1,5 @@
 import '../App.css';
+import { Link } from 'react-router-dom';
 
 const CryptoCard = (props) => {
     const card = props.card;
@@ -8,12 +9,16 @@ const CryptoCard = (props) => {
         <>
             {
                 card.CoinInfo ? (
-                    <a style={{ color: 'white' }}href={`https://www.cryptocompare.com${card.CoinInfo.Url}`} >
-                        <div key={card.CoinInfo.Id} className="coin-container">
+                    <div key={card.CoinInfo.Id} className="coin-container">
                         <div className="coin-row">
                             <div className="coin">
                                 <img className='coin-image'src={image_url + card.CoinInfo.ImageUrl} alt={card.CoinInfo.FullName} />
                                 <h3>{card.CoinInfo.FullName} ({card.CoinInfo.Name})</h3>
+                                <Link to={"/details/" + card.CoinInfo.Name}>
+                                    <button className='button button-detail'>
+                                        View Details 
+                                    </button>
+                                </Link>
                             </div>
                             <div className="coin-data">
                             {card.DISPLAY ?
@@ -25,8 +30,7 @@ const CryptoCard = (props) => {
                             : <p>Pricing data not found</p>}
                             </div>
                         </div>
-                        </div>
-                    </a>
+                    </div>
                 ) : null
             }
         </>
